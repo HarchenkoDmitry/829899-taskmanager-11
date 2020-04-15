@@ -8,7 +8,10 @@ const DescriptionItems = [
 ];
 
 const defaultRepeatingDays = new Map();
-DAYS.map((day) => defaultRepeatingDays.set(day, false));
+DAYS.forEach((day) => {
+  defaultRepeatingDays.set(day, false);
+});
+
 
 const getRandomDate = () => {
   const targetDate = new Date();

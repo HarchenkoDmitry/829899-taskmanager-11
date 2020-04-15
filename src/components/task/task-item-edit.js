@@ -45,24 +45,20 @@ export const createTaskItemEditTemplate = (task) => {
   };
 
   const createRepeatDaysListTemplate = (days) => {
-
-    const repeatDaysListMarkup = [];
-    let indexDay = 0;
-    for (const [dayName, isRepeat] of days) {
-      repeatDaysListMarkup.push(`
-      <input
+    const repeatDaysListMarkup = Object.entries(Object.fromEntries(days)).map(([dayName, isRepeat], index) => {
+      return (
+        `<input
         class="visually-hidden card__repeat-day-input"
         type="checkbox"
-        id="repeat-${dayName}-${indexDay}"
+        id="repeat-${dayName}-${index}"
         name="repeat"
         value="${dayName}"
         ${isRepeat ? `checked` : ``}
       />
-      <label class="card__repeat-day" for="repeat-${dayName}-${indexDay}"
-        >${dayName}</label
-      >`);
-      indexDay++;
-    }
+      <label class="card__repeat-day" for="repeat-${dayName}-${index}"
+        >${dayName}</label>`
+      );
+    });
 
     return (
       `<fieldset class="card__repeat-days">
