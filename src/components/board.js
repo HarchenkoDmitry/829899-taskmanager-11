@@ -1,13 +1,15 @@
-import {createSortTemplate} from './sort.js';
-import {createLoadMoreButtonTemplate} from './load-more-button.js';
-import {createTaskListTemplate} from './task/task-list.js';
+import AbstractComponent from "./abstract-component.js";
 
-export const createBoardTemplate = (tasks) => {
+
+const createBoardTemplate = () => {
   return (
-    `<section class="board container">
-      ${createSortTemplate()}
-      ${createTaskListTemplate(tasks)}
-      ${createLoadMoreButtonTemplate()}  
-    </section>`
+    `<section class="board container"></section>`
   );
 };
+
+
+export default class Board extends AbstractComponent {
+  get template() {
+    return createBoardTemplate();
+  }
+}

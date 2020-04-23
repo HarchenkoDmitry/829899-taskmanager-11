@@ -1,7 +1,8 @@
 import {COLORS} from '../../const.js';
 import {formatDate, formatTime} from '../../utils.js';
+import AbstractComponent from '../abstract-component.js';
 
-export const createTaskItemEditTemplate = (task) => {
+const createTaskItemEditTemplate = (task) => {
   let isRepeating = false;
   for (const isRepeatDay of task.repeatingDays.values()) {
     if (isRepeatDay) {
@@ -14,6 +15,19 @@ export const createTaskItemEditTemplate = (task) => {
 
   const repeatClass = isRepeating ? `card--repeat` : ``;
   const deadlineClass = isOverdue ? `card--deadline` : ``;
+
+  const dateElement = task.dueDate ?
+    `<fieldset class="card__date-deadline">
+      <label class="card__input-deadline-wrap">
+        <input
+          class="card__date"
+          type="text"
+          placeholder=""
+          name="date"
+          value="${formatDate(task.dueDate)} ${formatTime(task.dueDate)}"
+        />
+      </label>
+    </fieldset>` : ``;
 
   const createColorListTemplate = (selectedColor) => {
     const colorListMarkup = COLORS.map((color, index) => {
@@ -96,18 +110,7 @@ export const createTaskItemEditTemplate = (task) => {
                   date: <span class="card__date-status">${task.dueDate ? `yes` : `no`}</span>
                 </button>
 
-                ${task.dueDate ? `
-                <fieldset class="card__date-deadline">
-                  <label class="card__input-deadline-wrap">
-                    <input
-                      class="card__date"
-                      type="text"
-                      placeholder=""
-                      name="date"
-                      value="${formatDate(task.dueDate)} ${formatTime(task.dueDate)}"
-                    />
-                  </label>
-                </fieldset>` : ``}
+                ${dateElement}
 
                 <button class="card__repeat-toggle" type="button">
                   repeat:<span class="card__repeat-status">${isRepeating ? `yes` : `no`}</span>
@@ -129,3 +132,18 @@ export const createTaskItemEditTemplate = (task) => {
     </article>`
   );
 };
+
+export default class TaskItemEdit extends AbstractComponent {
+  constructor(task) {
+    super();
+    this._task = task;
+  }
+
+  get template() {
+    return createTaskItemEditTemplate(this._task);
+  }
+
+  setSubmitHandler(handler) {
+    this.element.querySelector(`form`).addEventListener(`submit`, handler);
+  }
+}

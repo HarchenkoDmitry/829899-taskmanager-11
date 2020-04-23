@@ -1,4 +1,6 @@
-export const createSiteFilterItemTemplate = (filter) => {
+import AbstractComponent from '../abstract-component.js';
+
+const createSiteFilterItemTemplate = (filter) => {
   return (
     `<input
         type="radio"
@@ -13,3 +15,14 @@ export const createSiteFilterItemTemplate = (filter) => {
       >`
   );
 };
+
+export default class FilterItem extends AbstractComponent {
+  constructor(filter) {
+    super();
+    this._filter = filter;
+  }
+
+  get template() {
+    return createSiteFilterItemTemplate(this._filter);
+  }
+}

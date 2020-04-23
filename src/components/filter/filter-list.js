@@ -1,9 +1,21 @@
-import {createSiteFilterItemTemplate} from './filter-item.js';
+import AbstractComponent from '../abstract-component.js';
+import FilterItem from './filter-item.js';
 
-export const createSiteFilterListTemplate = (filters) => {
+const createSiteFilterListTemplate = (filters) => {
   return (
     `<section class="main__filter filter container">
-      ${filters.map((filter) => createSiteFilterItemTemplate(filter)).join(``)}
+      ${filters.map((filter) => new FilterItem(filter).template).join(``)}
     </section>`
   );
 };
+
+export default class FilterList extends AbstractComponent {
+  constructor(filters) {
+    super();
+    this._filters = filters;
+  }
+
+  get template() {
+    return createSiteFilterListTemplate(this._filters);
+  }
+}

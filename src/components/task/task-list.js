@@ -1,15 +1,14 @@
-import {createTaskItemTemplate} from './task-item.js';
-import {createTaskItemEditTemplate} from './task-item-edit.js';
+import AbstractComponent from "../abstract-component.js";
 
-export const createTaskListTemplate = (tasks) => {
-  const taskList = tasks.splice(1).map((task) => {
-    return createTaskItemTemplate(task);
-  }).join(``);
-
+const createTasksTemplate = () => {
   return (
-    `<div class="board__tasks">
-      ${createTaskItemEditTemplate(tasks[0])}  
-      ${taskList}   
-    </div>`
+    `<div class="board__tasks"></div>`
   );
 };
+
+
+export default class Tasks extends AbstractComponent {
+  get template() {
+    return createTasksTemplate();
+  }
+}

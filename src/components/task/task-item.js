@@ -1,4 +1,5 @@
 import {formatDate, formatTime} from '../../utils.js';
+import AbstractComponent from '../abstract-component.js';
 
 export const createTaskItemTemplate = (task) => {
   let isRepeating = false;
@@ -16,6 +17,16 @@ export const createTaskItemTemplate = (task) => {
 
   const archiveActiveClass = task.isArchive ? `card__btn--disabled` : ``;
   const favoriteActiveClass = task.isFavorite ? `card__btn--disabled` : ``;
+
+  const dateElement = task.dueDate ?
+    `<div class="card__dates">
+      <div class="card__date-deadline">
+        <p class="card__input-deadline-wrap">
+          <span class="card__date">${formatDate(task.dueDate)}</span>
+          <span class="card__time">${formatTime(task.dueDate)}</span>
+        </p>
+      </div>
+    </div>` : ``;
 
   return (
     `<article class="card card--${task.color} ${repeatClass} ${deadlineClass}">
@@ -52,15 +63,7 @@ export const createTaskItemTemplate = (task) => {
           <div class="card__settings">
             <div class="card__details">
             
-            ${task.dueDate ? `
-              <div class="card__dates">
-                <div class="card__date-deadline">
-                  <p class="card__input-deadline-wrap">
-                    <span class="card__date">${formatDate(task.dueDate)}</span>
-                    <span class="card__time">${formatTime(task.dueDate)}</span>
-                  </p>
-                </div>
-              </div>` : ``}
+            ${dateElement}
             
             </div>
           </div>
@@ -69,3 +72,18 @@ export const createTaskItemTemplate = (task) => {
     </article>`
   );
 };
+
+export default class TaskItem extends AbstractComponent {
+  constructor(task) {
+    super();
+    this._task = task;
+  }
+
+  get template() {
+    return createTaskItemTemplate(this._task);
+  }
+
+  setEditButtonClickHandler(handler) {
+    this.element.querySelector(`.card__btn--edit`).addEventListener(`click`, handler);
+  }
+}
